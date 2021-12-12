@@ -61,6 +61,7 @@ export default function ListaUsuario() {
 								</Th>
 								<Th>Usuário</Th>
 								{seTelaGrande && <Th>Data de cadastro</Th>}
+								<Th w="40px">Ação</Th>
 							</Tr>
 						</Thead>
 						<Tbody>
@@ -70,7 +71,7 @@ export default function ListaUsuario() {
 								</Td>
 								<Td>
 									<Box>
-										<Text fontWheight="bold">Breno Dias</Text>
+										<Text fontWeight="bold">Breno Dias</Text>
 										<Text fontSize="sm" color="gray.300">breno.leles@outlook.com</Text>
 									</Box>
 								</Td>
