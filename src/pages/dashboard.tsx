@@ -2,7 +2,7 @@ import {Box, Flex, SimpleGrid, Text, theme} from '@chakra-ui/react';
 
 import dynamic from "next/dynamic";
 import { Header } from "../components/Header";
-import { Sidebar } from "../components/Sidebar";
+import { BarraLateral } from "../components/BarraLateral";
 
 const Chart = dynamic( () => import('react-apexcharts'),{
 	ssr: false
@@ -16,7 +16,7 @@ const options = {
 		zoom: {
 			enabled: false
 		},
-		fontColor: theme.colors.gray[500]
+		color: theme.colors.gray[500]
 	},
 	grid: {
 		show: false
@@ -28,7 +28,7 @@ const options = {
 		enabled: false
 	},
 	xaxis: {
-		type: 'datetime',
+		type: "datetime",
 		axisBorder: {
 			color: theme.colors.gray[600]
 		},
@@ -66,11 +66,11 @@ export default  function Dashboard() {
 			<Header />
 			
 			<Flex w="100%" my="6" maxW={1480} mx="auto" px="6">
-			 <Sidebar />
+			 <BarraLateral />
 				
 				<SimpleGrid flex="1" gap="4" minChildWidth="320px" align="flex-start">
 					<Box
-						p="8"
+						p={["6","8"]}
 						bg="gray.800"
 						borderRadius={8}
 						pb="4"
@@ -80,7 +80,7 @@ export default  function Dashboard() {
 					</Box>
 					
 					<Box
-						p="8"
+						p={["6","8"]}
 						bg="gray.800"
 						borderRadius={8}
 						pb="4"
