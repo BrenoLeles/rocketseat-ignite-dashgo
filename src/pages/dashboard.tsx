@@ -1,4 +1,5 @@
 import {Box, Flex, SimpleGrid, Text, theme} from '@chakra-ui/react';
+import { ApexOptions } from 'apexcharts';
 
 import dynamic from "next/dynamic";
 import { Header } from "../components/Header";
@@ -8,7 +9,7 @@ const Chart = dynamic( () => import('react-apexcharts'),{
 	ssr: false
 })
 
-const options = {
+const options: ApexOptions = {
 	chart: {
 		toolbar: {
 			show: false
@@ -16,7 +17,7 @@ const options = {
 		zoom: {
 			enabled: false
 		},
-		color: theme.colors.gray[500]
+		foreColor: theme.colors.gray[500]
 	},
 	grid: {
 		show: false
@@ -54,7 +55,7 @@ const options = {
 			opacityTo: 0.3
 		}
 	}
-};
+} as const;
 
 const series = [
 	{name: 'teste1', data: [31,120, 19, 38, 49, 13, 109]}

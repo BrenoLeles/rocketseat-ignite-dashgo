@@ -2,14 +2,24 @@ import {AppProps} from 'next/app';
 import {ChakraProvider} from '@chakra-ui/react';
 import { theme } from '../styles/theme';
 import {BarraLateralDrawerProvider} from "../contexts/BarraLateralContext";
+import {makeServer} from "../services/mirage";
+import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevtools } from 'react-query/devtools'
+
+if (process.env.NODE_ENV === 'development') {
+  makeServer();
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider resetCSS theme={theme}>
-      <BarraLateralDrawerProvider>
-        <Component {...pageProps} />
-      </BarraLateralDrawerProvider>
-    </ChakraProvider>
+    <QueryClientProvider  client={new QueryClient()}>
+      <ChakraProvider resetCSS theme={theme}>
+        <BarraLateralDrawerProvider>
+          <Component {...pageProps} />
+        </BarraLateralDrawerProvider>
+      </ChakraProvider>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   )
 }
 
