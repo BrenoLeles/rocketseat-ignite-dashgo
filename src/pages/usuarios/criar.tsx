@@ -1,13 +1,17 @@
 import {Box, Flex, Heading, Divider, VStack, SimpleGrid, HStack, Button} from '@chakra-ui/react';
 import Link from 'next/link';
 import {SubmitHandler, useForm} from "react-hook-form";
-const { yupResolver } = require('@hookform/resolvers/yup')
+
+const {yupResolver} = require('@hookform/resolvers/yup')
 import * as yup from "yup";
+import {useMutation} from "react-query";
 
 import {Header} from "../../components/Header";
 import {BarraLateral} from "../../components/BarraLateral";
 import {Input} from "../../components/Form/Input";
-
+import {api} from "../../services/api"
+import {queryClient} from "../../services/queryClient";
+import {useRouter} from "next/router";
 
 type CriarUsuarioFormData = {
 	nome: string;
@@ -24,23 +28,41 @@ const CriarUsuarioFormSchema = yup.object({
 })
 
 export default function CriarUsuario() {
+	const router = useRouter()
 	
-	const { register, handleSubmit, formState } = useForm({
-		resolver: yupResolver( CriarUsuarioFormSchema )
+	const criarUsuario = useMutation(async (usuario: CriarUsuarioFormData) => {
+		const response = await api.post('usuarios', {
+			usuario: {
+				...usuario,
+				created_at: new Date()
+			}
+		})
+		
+		return response.data.usuario;
+	}, {
+		onSuccess: () => {
+			queryClient.invalidateQueries('usuarios');
+		}
+	})
+	
+	const {register, handleSubmit, formState} = useForm({
+		resolver: yupResolver(CriarUsuarioFormSchema)
 	});
 	
-	const { errors } = formState;
+	const {errors} = formState;
 	
-	const handleCriarUsuario: SubmitHandler<CriarUsuarioFormData> = (values) => {
-		console.log(values)
+	const handleCriarUsuario: SubmitHandler<CriarUsuarioFormData> = async (values) => {
+		await criarUsuario.mutateAsync(values);
+		
+		router.push('/usuarios')
 	}
 	
 	return (
 		<Box>
-			<Header />
+			<Header/>
 			
 			<Flex w="100%" my="6" maxW={1480} mx="auto" px="6">
-				<BarraLateral />
+				<BarraLateral/>
 				
 				<Box
 					as="form"
@@ -52,7 +74,7 @@ export default function CriarUsuario() {
 				>
 					<Heading size="lg" fontWeight="normal">Criar usuário</Heading>
 					
-					<Divider my="6" borderColor="gray.700" />
+					<Divider my="6" borderColor="gray.700"/>
 					
 					<VStack spacing="8">
 						
@@ -60,15 +82,15 @@ export default function CriarUsuario() {
 							<Input
 								name="nome"
 								label="Nome Completo"
-					       error={errors.nome}
-					       {...register('nome', )}
+								error={errors.nome}
+								{...register('nome',)}
 							/>
 							<Input
 								name="email"
 								type="email"
 								label="E-mail"
 								error={errors.email}
-								{...register('email', )}
+								{...register('email',)}
 							/>
 						</SimpleGrid>
 						
@@ -78,17 +100,17 @@ export default function CriarUsuario() {
 								type="password"
 								label="Senha"
 								error={errors.senha}
-								{...register('senha', )}
+								{...register('senha',)}
 							/>
 							<Input
 								name="senha_confirmacao"
 								type="password"
 								label="Confirmação da Senha"
 								error={errors.senha_confirmacao}
-								{...register('senha_confirmacao', )}
+								{...register('senha_confirmacao',)}
 							/>
 						</SimpleGrid>
-						
+					
 					</VStack>
 					
 					<Flex mt="8" justify="flex-end">

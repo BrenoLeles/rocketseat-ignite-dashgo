@@ -2,10 +2,11 @@ import {Button} from "@chakra-ui/react";
 
 interface ItemPaginacaoProps {
 	seAtual?: boolean
-	numPagina: number
+	numPagina: number,
+	onMudarPagina: (pagina: number) => void;
 }
 
-export function ItemPaginacao({numPagina, seAtual = false}: ItemPaginacaoProps) {
+export function ItemPaginacao({numPagina,onMudarPagina,  seAtual = false}: ItemPaginacaoProps) {
 	if(seAtual) {
 		return (
 			<Button
@@ -32,6 +33,7 @@ export function ItemPaginacao({numPagina, seAtual = false}: ItemPaginacaoProps) 
 			_hover={{
 				bg: 'gray.500'
 			}}
+			onClick={() => onMudarPagina(numPagina)}
 		>
 			{numPagina}
 		</Button>
